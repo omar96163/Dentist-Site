@@ -4,6 +4,7 @@ import CTASection from "./components/CTASection";
 import BlogSection from "./components/BlogSection";
 import HeroSection from "./components/HeroSection";
 import StatsSection from "./components/StatsSection";
+import ServicesSection from "./components/ServicesSection";
 
 export default function Home() {
   return (
@@ -12,9 +13,13 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
+
       <HeroSection />
 
       {/* Services Section */}
+      <ServicesSection />
+
+      {/* Stats Section */}
       <StatsSection />
 
       {/* Blog Preview Section */}

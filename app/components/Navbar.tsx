@@ -33,6 +33,7 @@ const Navbar = () => {
 
   const navItems = [
     { name: "الرئيسية", href: "#hero" },
+    { name: "الخدمات", href: "#services" },
     { name: "الإحصائيات", href: "#stats" },
     { name: "المقالات", href: "#blog" },
     { name: "CTA", href: "#cta" },
