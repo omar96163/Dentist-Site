@@ -96,7 +96,7 @@ const services: ServiceItem[] = [
 
 export default function DentalServices() {
   return (
-    <section className="py-28 relative overflow-hidden bg-gradient-to-b from-gray-50/80 to-white dark:from-gray-900/70 dark:to-gray-900">
+    <section className="py-28 relative overflow-hidden bg-linear-to-b from-gray-50/80 to-white dark:from-gray-900/70 dark:to-gray-900">
       {/* Animated Background Orbs */}
       <motion.div
         className="absolute -top-20 -left-20 w-72 h-72 bg-cyan-400/20 dark:bg-cyan-500/15 rounded-full blur-3xl"
@@ -122,7 +122,7 @@ export default function DentalServices() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-blue-100 dark:from-cyan-900/30 dark:to-blue-900/30 px-4 py-2 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 bg-linear-to-r from-cyan-100 to-blue-100 dark:from-cyan-900/30 dark:to-blue-900/30 px-4 py-2 rounded-full mb-6">
             <Star size={16} className="text-cyan-600 dark:text-cyan-400" />
             <span className="text-cyan-700 dark:text-cyan-300 font-medium">
               خدماتنا الذهبية
@@ -183,7 +183,7 @@ const ServiceCard = ({
       <div className="bg-white/60 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-200 dark:border-gray-700/50 rounded-3xl p-8 h-full flex flex-col">
         {/* Icon Container */}
         <motion.div
-          className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${service.color} flex items-center justify-center mb-6 shadow-lg shrink-0`}
+          className={`w-14 h-14 rounded-2xl bg-linear-to-r ${service.color} flex items-center justify-center mb-6 shadow-lg shrink-0`}
           whileHover={{ scale: 1.1, y: -2 }}
           transition={{ type: "spring", stiffness: 400 }}
         >
@@ -194,7 +194,7 @@ const ServiceCard = ({
           {service.title}
         </h3>
 
-        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6 flex-grow">
+        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6 grow">
           {service.desc}
         </p>
 
