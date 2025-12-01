@@ -5,7 +5,7 @@ import Link from "next/link";
 import { MessageCircle, Clock } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-// ✅ Hook للعد التنازلي - آمن
+// ✅ Hook للعد التنازلي مع إيقاف التايمر عند الصفر
 const useCountdown = (durationHours: number = 24) => {
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
@@ -14,19 +14,22 @@ const useCountdown = (durationHours: number = 24) => {
   });
 
   useEffect(() => {
-    // ✅ Date.now() يُستدعى داخل useEffect (مسموح)
     const target = Date.now() + durationHours * 60 * 60 * 1000;
 
     const timer = setInterval(() => {
       const now = Date.now();
       const distance = target - now;
 
-      if (distance > 0) {
-        const hours = Math.floor(distance / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        setTimeLeft({ hours, minutes, seconds });
+      if (distance <= 0) {
+        setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
+        clearInterval(timer);
+        return;
       }
+
+      const hours = Math.floor(distance / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      setTimeLeft({ hours, minutes, seconds });
     }, 1000);
 
     return () => clearInterval(timer);
@@ -35,27 +38,25 @@ const useCountdown = (durationHours: number = 24) => {
   return timeLeft;
 };
 
-// ✅ مولد جزيئات ثابت (مرة واحدة)
-const useRainParticles = (count: number) => {
-  return useMemo(() => {
-    return Array.from({ length: count }, (_, i) => ({
-      id: i,
-      left: 5 + (i * 100) / count, // توزيع متساوي
-      duration: 2.5 + (i % 3) * 0.5, // 2.5, 3.0, 3.5, ...
-      delay: (i * 0.2) % 1.5,
-    }));
-  }, [count]);
-};
+// ✅ مولد جزيئات المطر (ثابتة للأداء)
+const useRainParticles = (count: number) =>
+  useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => ({
+        id: i,
+        left: 5 + (i * 100) / count,
+        duration: 2.5 + (i % 3) * 0.5,
+        delay: (i * 0.2) % 1.5,
+      })),
+    [count]
+  );
 
 const CTASection = () => {
   const { hours, minutes, seconds } = useCountdown(24);
   const rainParticles = useRainParticles(15);
 
   return (
-    <section
-      id="cta"
-      className="py-32 px-4 relative overflow-hidden min-h-[600px] flex items-center justify-center"
-    >
+    <section className="py-32 px-4 relative overflow-hidden min-h-[600px] flex items-center justify-center">
       {/* Sky Background */}
       <div className="absolute inset-0 bg-linear-to-b from-blue-900/30 via-indigo-900/20 to-transparent z-0"></div>
 
@@ -76,20 +77,14 @@ const CTASection = () => {
         }}
       />
 
-      {/* Rain Particles - ✅ آمن الآن */}
+      {/* Rain Particles */}
       <div className="absolute inset-0 z-0">
         {rainParticles.map((particle) => (
           <motion.div
             key={particle.id}
-            className="absolute w-1 h-8 bg-blue-900/40 rounded-full"
-            style={{
-              left: `${particle.left}%`,
-              top: "-20px",
-            }}
-            animate={{
-              y: ["-20px", "100vh"],
-              opacity: [0, 1, 0],
-            }}
+            className="absolute w-1 h-8 bg-blue-900/40 rounded-full will-change-transform"
+            style={{ left: `${particle.left}%`, top: "-20px" }}
+            animate={{ y: ["-20px", "100vh"], opacity: [0, 1, 0] }}
             transition={{
               duration: particle.duration,
               repeat: Infinity,
@@ -105,12 +100,7 @@ const CTASection = () => {
           initial={{ opacity: 0, y: -200, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 100 }}
-          transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-            mass: 1,
-          }}
+          transition={{ type: "spring", stiffness: 100, damping: 20, mass: 1 }}
           className="max-w-4xl mx-auto z-10 w-full"
         >
           {/* Glass Card */}
@@ -167,6 +157,7 @@ const CTASection = () => {
                 ))}
               </motion.div>
 
+              {/* Buttons */}
               <motion.div
                 className="flex flex-col sm:flex-row gap-4 justify-center"
                 initial={{ opacity: 0, y: 20 }}
@@ -192,6 +183,7 @@ const CTASection = () => {
                     className="px-8 py-4 border-2 border-white text-white font-bold rounded-full flex items-center gap-2 cursor-pointer"
                     whileHover={{ y: -8, scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
+                    aria-label="تواصل معنا عبر واتساب"
                   >
                     <MessageCircle size={20} />
                     تواصل معنا
