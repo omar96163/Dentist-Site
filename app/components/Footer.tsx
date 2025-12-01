@@ -24,11 +24,8 @@ const Footer = () => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const easeOut = 1 - Math.pow(1 - progress, 3);
-
       window.scrollTo(0, start * (1 - easeOut));
-      if (progress < 1) {
-        requestAnimationFrame(animateScroll);
-      }
+      if (progress < 1) requestAnimationFrame(animateScroll);
     };
     requestAnimationFrame(animateScroll);
   };
@@ -189,7 +186,7 @@ const Footer = () => {
         </motion.div>
       </div>
 
-      {/* Spaceship Back-to-Top (يظهر دائمًا في الفوتر) */}
+      {/* Back-to-Top Button */}
       <AnimatePresence>
         <motion.button
           onClick={scrollToTop}
