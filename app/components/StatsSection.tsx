@@ -6,43 +6,6 @@ import Particles from "@tsparticles/react";
 import { Calendar, Users, ShieldCheck, Headphones } from "lucide-react";
 
 /* -----------------------------------------------------
-   PARTICLES CONFIG — خارج الـ component لتحسين الأداء
------------------------------------------------------ */
-const particlesOptions = {
-  fpsLimit: 60,
-  background: { opacity: 0 },
-  interactivity: {
-    detectsOn: "canvas",
-    events: { onHover: { enable: false } },
-  },
-  particles: {
-    color: { value: "#5eead4" },
-    links: {
-      color: "#93c5fd",
-      distance: 150,
-      enable: true,
-      opacity: 0.15,
-      width: 1,
-    },
-    move: {
-      direction: "none",
-      enable: true,
-      outModes: "out",
-      random: true,
-      speed: 0.8,
-    },
-    number: {
-      density: { enable: true, width: 800, height: 800 },
-      value: 30,
-    },
-    opacity: { value: 0.4 },
-    shape: { type: "circle" },
-    size: { value: { min: 1, max: 3 } },
-  },
-  detectRetina: true,
-};
-
-/* -----------------------------------------------------
    STATS DATA
 ----------------------------------------------------- */
 const stats = [
@@ -75,16 +38,14 @@ const StatsSection = () => {
             دنتي
             <span className="text-purple-300">كير </span>
           </span>
-          — هنا نبني ثقتك على أساس من الخبرة والجودة والشفافية.  
-          هذه بعض الأرقام التي تروي قصتنا:
+          — هنا نبني ثقتك على أساس من الخبرة والجودة والشفافية. هذه بعض الأرقام
+          التي تروي قصتنا:
         </p>
       </div>
 
       {/* PARTICLES */}
       {isInView && (
-        <Particles
-          className="absolute inset-0 pointer-events-none"
-        />
+        <Particles className="absolute inset-0 pointer-events-none" />
       )}
 
       {/* FLOATING ORBS */}
