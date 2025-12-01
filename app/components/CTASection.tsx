@@ -56,7 +56,10 @@ const CTASection = () => {
   const rainParticles = useRainParticles(15);
 
   return (
-    <section className="py-32 px-4 relative overflow-hidden min-h-[600px] flex items-center justify-center">
+    <section
+      id="cta"
+      className="py-32 px-4 relative overflow-hidden min-h-[600px] flex items-center justify-center"
+    >
       {/* Sky Background */}
       <div className="absolute inset-0 bg-linear-to-b from-blue-900/30 via-indigo-900/20 to-transparent z-0"></div>
 
