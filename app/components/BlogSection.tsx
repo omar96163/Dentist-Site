@@ -4,12 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Clock } from "lucide-react";
-import { useState } from "react";
+import { useState, memo } from "react";
 
-// Helper: تقدير مدة القراءة (افتراض ~200 كلمة/دقيقة)
+// Helper: تقدير مدة القراءة
 const estimateReadTime = (title: string): number => {
   const words = title.split(" ").length + 50; // +50 كلمة متوسط المقال
-  return Math.ceil(words / 200); // بالدقائق
+  return Math.ceil(words / 200);
 };
 
 const articles = [
@@ -46,13 +46,13 @@ const BlogSection = () => {
       <motion.div
         className="absolute top-0 left-10 w-40 h-40 bg-blue-300/20 dark:bg-blue-500/15 rounded-full blur-3xl"
         animate={{ y: [-15, 15, -15], x: [-10, 10, -10] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute bottom-10 right-0 w-52 h-52 bg-cyan-300/20 dark:bg-cyan-400/15 rounded-full blur-3xl"
         animate={{ y: [15, -15, 15], x: [10, -10, 10] }}
         transition={{
-          duration: 12,
+          duration: 14,
           repeat: Infinity,
           ease: "easeInOut",
           delay: 1,
@@ -95,7 +95,7 @@ const BlogSection = () => {
         {/* Articles Grid */}
         <div className="grid md:grid-cols-3 gap-8">
           {articles.map((post, idx) => (
-            <BlogCard key={post.id} post={post} index={idx} />
+            <MemoBlogCard key={post.id} post={post} index={idx} />
           ))}
         </div>
 
@@ -135,15 +135,15 @@ const BlogCard = ({
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.15 }}
+      transition={{ delay: index * 0.12 }}
       whileHover={{
-        y: -16,
-        rotate: 1.5,
-        transition: { type: "spring", stiffness: 300, damping: 15 },
+        y: -10,
+        scale: 1.02,
+        transition: { type: "spring", stiffness: 250 },
       }}
       className="group relative bg-white/60 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-200 dark:border-gray-700/50 rounded-3xl shadow-lg overflow-hidden cursor-pointer"
     >
-      {/* Image with Lazy Loading & Flying Effect */}
+      {/* Image */}
       <div className="relative h-48 overflow-hidden">
         <Image
           src={post.image}
@@ -153,11 +153,10 @@ const BlogCard = ({
           loading="lazy"
           sizes="(max-width: 768px) 100vw, 33vw"
         />
-        {/* Overlay on hover */}
         <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
 
-      {/* Like Button - Flying Heart */}
+      {/* Like Button */}
       <motion.button
         className="absolute top-4 right-4 z-10 p-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-full shadow-md"
         whileTap={{ scale: 0.9 }}
@@ -207,5 +206,7 @@ const BlogCard = ({
     </motion.div>
   );
 };
+
+const MemoBlogCard = memo(BlogCard);
 
 export default BlogSection;
