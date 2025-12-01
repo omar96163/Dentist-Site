@@ -1,8 +1,8 @@
 "use client";
 
+import { memo } from "react";
 import { motion } from "framer-motion";
 import {
-  // Tooth, ❌ شيلنا دي خلاص لأنها مش موجودة
   Sparkles,
   ShieldCheck,
   Smile,
@@ -13,17 +13,15 @@ import {
   LucideProps,
 } from "lucide-react";
 
-// ✅ 1. عملنا أيقونة "سِنة" مخصوصة بنفس ستايل المكتبة
+/* -------------------- Custom Tooth Icon -------------------- */
 const ToothIcon = (props: LucideProps) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
+    viewBox="0 0 24 24"
     strokeWidth="2"
+    stroke="currentColor"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
@@ -33,9 +31,9 @@ const ToothIcon = (props: LucideProps) => (
   </svg>
 );
 
-// ✅ تعريف الـ Interface
+/* -------------------- Types -------------------- */
 interface ServiceItem {
-  icon: React.ElementType; // غيرناها عشان تقبل الأيقونة المخصصة
+  icon: React.ElementType;
   title: string;
   desc: string;
   color: string;
@@ -43,9 +41,10 @@ interface ServiceItem {
   text: string;
 }
 
+/* -------------------- Data -------------------- */
 const services: ServiceItem[] = [
   {
-    icon: ToothIcon, // ✅ دلوقتي شغالة 100%
+    icon: ToothIcon,
     title: "تنظيف وتلميع الأسنان",
     desc: "جلسات تنظيف احترافية لإزالة الجير وتلميع الأسنان باستخدام أحدث الأجهزة.",
     color: "from-cyan-400 to-blue-500",
@@ -94,73 +93,56 @@ const services: ServiceItem[] = [
   },
 ];
 
+/* ============================================================
+   MAIN SECTION
+============================================================ */
 export default function DentalServices() {
   return (
     <section
       id="services"
       className="py-28 relative overflow-hidden bg-linear-to-b from-gray-50/80 to-white dark:from-gray-900/70 dark:to-gray-900"
     >
-      {/* Animated Background Orbs */}
+      {/* Background Orbs (Optimized) */}
       <motion.div
         className="absolute -top-20 -left-20 w-72 h-72 bg-cyan-400/20 dark:bg-cyan-500/15 rounded-full blur-3xl"
-        animate={{ y: [-20, 20, -20], rotate: 360 }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        animate={{ y: [-25, 25, -25] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute -bottom-20 -right-20 w-80 h-80 bg-blue-500/20 dark:bg-blue-600/15 rounded-full blur-3xl"
-        animate={{ y: [20, -20, 20], rotate: -360 }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: "linear",
-          delay: 1,
-        }}
+        animate={{ y: [25, -25, 25] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        {/* Title Section */}
+        {/* Header */}
         <motion.div
           className="text-center mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-120px" }}
         >
-          <div
-            className="inline-flex items-center gap-2 bg-linear-to-r from-cyan-100 to-blue-100 dark:from-cyan-900/30 dark:to-blue-900/30 
-            px-4 py-2 rounded-full mb-6"
-          >
+          <div className="inline-flex items-center gap-2 bg-linear-to-r from-cyan-100 to-blue-100 dark:from-cyan-900/30 dark:to-blue-900/30 px-4 py-2 rounded-full mb-6">
             <Star size={16} className="text-cyan-600 dark:text-cyan-400" />
             <span className="text-cyan-700 dark:text-cyan-300 font-medium">
               خدماتنا الذهبية
             </span>
           </div>
 
-          <motion.h2
-            className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-          >
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
             خدمات طب الأسنان
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             نقدم لك أفضل الخدمات العلاجية والتجميلية باستخدام أحدث تقنيات طب
             الأسنان.
-          </motion.p>
+          </p>
         </motion.div>
 
-        {/* Cards Grid */}
+        {/* Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((srv, i) => (
-            <ServiceCard key={i} service={srv} index={i} />
+            <MemoCard key={srv.title} service={srv} index={i} />
           ))}
         </div>
       </div>
@@ -168,6 +150,9 @@ export default function DentalServices() {
   );
 }
 
+/* ============================================================
+   SERVICE CARD (Memoized)
+============================================================ */
 const ServiceCard = ({
   service,
   index,
@@ -180,21 +165,17 @@ const ServiceCard = ({
   return (
     <motion.div
       className="group relative rounded-3xl overflow-hidden cursor-pointer h-full"
-      initial={{ opacity: 0, y: 30, rotateX: 10 }}
-      whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ delay: index * 0.1, type: "spring", stiffness: 200 }}
-      whileHover={{ y: -10, transition: { duration: 0.3 } }}
+      initial={{ opacity: 0, y: 25 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      whileHover={{ y: -8 }}
     >
-      <div
-        className="bg-white/60 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-200 dark:border-gray-700/50 
-        rounded-3xl p-8 h-full flex flex-col"
-      >
-        {/* Icon Container */}
+      <div className="bg-white/60 dark:bg-gray-800/50 backdrop-blur-xl border border-gray-200 dark:border-gray-700/50 rounded-3xl p-8 h-full flex flex-col">
+        {/* Icon */}
         <motion.div
-          className={`w-14 h-14 rounded-2xl bg-linear-to-r ${service.color} flex items-center justify-center mb-6 shadow-lg shrink-0`}
-          whileHover={{ scale: 1.1, y: -2 }}
-          transition={{ type: "spring", stiffness: 400 }}
+          className={`w-14 h-14 rounded-2xl bg-linear-to-r ${service.color} flex items-center justify-center mb-6 shadow-lg`}
+          whileHover={{ scale: 1.08 }}
         >
           <IconComponent size={28} className="text-white" />
         </motion.div>
@@ -203,26 +184,31 @@ const ServiceCard = ({
           {service.title}
         </h3>
 
-        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6 grow">
+        <p className="text-gray-600 dark:text-gray-300 text-sm mb-6 grow">
           {service.desc}
         </p>
 
         <motion.button
-          className={`w-full py-2.5 rounded-xl font-medium flex items-center justify-center gap-2 ${service.bg} ${service.text} mt-auto`}
+          className={`w-full py-2.5 rounded-xl font-medium flex items-center justify-center gap-2 ${service.bg} ${service.text}`}
           whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.98 }}
+          whileTap={{ scale: 0.97 }}
+          aria-label={`احجز خدمة ${service.title}`}
         >
           احجز الآن
           <ChevronRight size={16} />
         </motion.button>
       </div>
 
+      {/* Hover Glow */}
       <motion.div
         className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: `radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%)`,
+          background:
+            "radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%)",
         }}
       />
     </motion.div>
   );
 };
+
+const MemoCard = memo(ServiceCard);
