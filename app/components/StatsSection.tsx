@@ -11,8 +11,8 @@ import { Calendar, Users, ShieldCheck, Headphones } from "lucide-react";
 const stats = [
   { num: 15, suffix: " سنة خبرة", icon: Calendar },
   { num: 5000, suffix: " حالة ناجحة", icon: Users },
-  { num: 100, suffix: "% تعقيم وأمان", icon: ShieldCheck },
-  { num: 24, suffix: "/7 دعم للطوارئ", icon: Headphones },
+  { num: 100, suffix: "% 100 تعقيم وأمان", icon: ShieldCheck },
+  { num: 24, suffix: "24/7 دعم للطوارئ", icon: Headphones },
 ];
 
 /* -----------------------------------------------------
